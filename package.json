@@ -9,6 +9,7 @@
     "build:umd": "rollup -c ./config/rollup.umd.js",
     "compress": "npm run compress:umd",
     "compress:umd": "uglifyjs --config-file ./config/compress.json -o dist/path.min.js dist/path.js",
+    "format": "prettier --print-width 120 --use-tabs --single-quote --write \"src/**/*.js\"",
     "prepublish": "npm run test",
     "pretest": "npm run build",
     "start": "npm run build && ava --watch",
