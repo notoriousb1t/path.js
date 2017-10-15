@@ -6,15 +6,19 @@ export default function Path(d) {
 	if (Array.isArray(d)) {
 		this.points = d;
 	} else {
-		this.points = d.trim()
+		this.points = d
+			.trim()
 			.split(/\s*(?=[A-Z])/i)
-			.map((pointString) => {
-				return pointString.trim()
-				// These two replaces are to simplify the split regex
-					.replace(/([^, ])-/g, '$1,-')
-					.replace(/([a-z])(?![,])/gi, '$1 ')
-					.split(/[\s,]+/)
-					.map((coord, i) => (i === 0 ? coord : Number(coord)));
+			.map(pointString => {
+				return (
+					pointString
+						.trim()
+						// These two replaces are to simplify the split regex
+						.replace(/([^, ])-/g, '$1,-')
+						.replace(/([a-z])(?![,])/gi, '$1 ')
+						.split(/[\s,]+/)
+						.map((coord, i) => (i === 0 ? coord : Number(coord)))
+				);
 			})
 			.map((pointArray, i, allPoints) => {
 				// This is done in a separate map so that lastPoint is parsed point
@@ -54,9 +58,7 @@ Path.prototype.reverse = function reversePath() {
 	});
 
 	// Reverse
-	const reversedPoints = [
-		['M', ...points[points.length - 1].splice(-2, 2)]
-	];
+	const reversedPoints = [['M', ...points[points.length - 1].splice(-2, 2)]];
 
 	// Don't hit 0: that'll just equal 'M'
 	for (let i = points.length - 1; i >= 1; i--) {
@@ -78,21 +80,36 @@ Path.prototype.reverse = function reversePath() {
 };
 
 Path.prototype.d = function getPathString(options) {
-	options = Object.assign({
-		type: 'relative',
-	}, options);
+	options = Object.assign(
+		{
+			type: 'relative'
+		},
+		options
+	);
 
 	return this.points
 		.map((point, i, allPoints) => {
 			if (i === 0 || options.type === 'absolute') {
-				return point[0] + point.slice(1).map(toImpreciseString).join(',');
+				return (
+					point[0] +
+					point
+						.slice(1)
+						.map(toImpreciseString)
+						.join(',')
+				);
 			}
 
 			const prev = allPoints[i - 1];
 
-			return point[0].toLowerCase() + point.slice(1).map((num, j) => {
-					return toImpreciseString(num - prev[prev.length - (j % 2 === 0 ? 2 : 1)]);
-				}).join(',');
+			return (
+				point[0].toLowerCase() +
+				point
+					.slice(1)
+					.map((num, j) => {
+						return toImpreciseString(num - prev[prev.length - (j % 2 === 0 ? 2 : 1)]);
+					})
+					.join(',')
+			);
 		})
 		.join('');
 };
@@ -104,14 +121,17 @@ function toImpreciseString(num) {
 Path.prototype.toString = Path.prototype.d;
 
 Path.scale = function initPathScale(pathStrings, options) {
-	options = Object.assign({
-		loop: false, // start from 0 when loop gets above 1?
-	}, options);
+	options = Object.assign(
+		{
+			loop: false // start from 0 when loop gets above 1?
+		},
+		options
+	);
 
-	const paths = pathStrings.map((str) => str instanceof Path ? str : new Path(str));
+	const paths = pathStrings.map(str => (str instanceof Path ? str : new Path(str)));
 
 	// Check that what we're trying to do is actually possible with this lib
-	paths.slice(1).forEach((path) => {
+	paths.slice(1).forEach(path => {
 		if (path.points.length !== paths[0].points.length) {
 			throw new Error('Both paths have to be the same length, sorry');
 		}
@@ -185,7 +205,7 @@ function mixPoints(a, b, i, x) {
 		return [aPoints[0], ...newPoints];
 	}
 
-	throw new Error('Mixing those command types isn\'t supported, sorry');
+	throw new Error("Mixing those command types isn't supported, sorry");
 }
 
 function sToC(points, prev) {
