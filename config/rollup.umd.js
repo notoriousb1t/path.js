@@ -1,7 +1,7 @@
 import babel from 'rollup-plugin-babel';
 
 export default {
-	entry: 'src/path.js',
+	entry: 'src/path/index.js',
 	dest: 'dist/path.js',
 	sourceMap: true,
 	plugins: [
