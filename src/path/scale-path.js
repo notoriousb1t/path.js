@@ -1,42 +1,36 @@
 import { mixPaths } from './mix-paths';
 import { Path } from './path';
 import { slopeToCurve } from './slope-to-curve';
+import { C, S } from './constants';
 
 export function scalePath(pathStrings, options) {
-	options = Object.assign(
-		{
-			loop: false // start from 0 when loop gets above 1?
-		},
-		options
-	);
+	const loop = options && options.loop;
 
-	const paths = pathStrings.map(str => (str instanceof Path ? str : new Path(str)));
+	const paths = pathStrings.map(Path);
 	const pointLength = paths[0].points.length;
 
 	// Check that what we're trying to do is actually possible with this lib
-	paths.forEach((path, i) => {
-		if (i === 0) {
-			return;
-		}
-		if (path.points.length !== pointLength) {
-			throw new Error('Both paths have to be the same length, sorry');
+	for (let j = 1, jlen = paths.length; j < jlen; j++) {
+		let points = paths[j].points;
+		if (points.length !== pointLength) {
+			throw new Error('Both paths must be equal length');
 		}
 
-		path.points.forEach((point, i) => {
+		points.forEach((point, i) => {
 			if (!mixable(point[0], paths[0].points[i][0])) {
-				throw new Error('Command types have to match, sorry');
+				throw new Error('Commands must match');
 			}
 		});
-	});
+	}
 
-	if (options.loop) {
+	if (loop) {
 		paths.push(paths[0]);
 	}
 
 	const sectionSize = 1 / (paths.length - 1);
 
-	return (x) => {
-		if (options.loop) {
+	return x => {
+		if (loop) {
 			x %= 1;
 		}
 
@@ -54,5 +48,5 @@ export function scalePath(pathStrings, options) {
 }
 
 function mixable(a, b) {
-	return a === b || (a === 'C' && b === 'S') || (a === 'S' && b === 'C');
+	return a === b || (a === C && b === S) || (a === S && b === C);
 }

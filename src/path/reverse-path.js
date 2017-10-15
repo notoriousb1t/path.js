@@ -1,38 +1,40 @@
-import { Path } from './path'
-import { slopeToCurve } from './slope-to-curve'
+import { Path } from './path';
+import { slopeToCurve } from './slope-to-curve';
+import { C, S, M, L } from './constants';
 
-export function reversePath() {
+export function reversePath(points) {
 	// convert all curves to C
-	const points = this.points.map((num, i) => {
-		if (num[0] === 'M' || num[0] === 'L' || num[0] === 'C') {
+	const allPoints = points.map((num, i) => {
+		const command = num[0]
+		if (command === M || command === L || command === C) {
 			return num.slice();
 		}
 
-		if (num[0] === 'S') {
-			return slopeToCurve(num, this.points[i - 1]);
+		if (command === S) {
+			return slopeToCurve(num, points[i - 1]);
 		}
 
-		throw new Error('Reversing paths with that in is not yet supported, sorry');
+		throw new Error('Cannot reverse that');
 	});
 
 	// Reverse
-	const reversedPoints = [['M', ...points[points.length - 1].splice(-2, 2)]];
+	const reversedPoints = [[M].concat(allPoints[allPoints.length - 1].splice(-2, 2))];
 
 	// Don't hit 0: that'll just equal 'M'
-	for (let i = points.length - 1; i >= 1; i--) {
+	for (let i = allPoints.length - 1; i >= 1; i--) {
 		// reverse arguments
-		const oldPoint = points[i];
+		const oldPoint = allPoints[i];
 		const newPoint = [oldPoint[0]];
 
 		for (let j = oldPoint.length - 2; j > 0; j -= 2) {
-			newPoint.push(...oldPoint.slice(j, j + 2));
+			newPoint.push.apply(newPoint, oldPoint.slice(j, j + 2));
 		}
 
 		// grab coordinates from prev
-		newPoint.push(...points[i - 1].splice(-2, 2));
+		newPoint.push.apply(newPoint, allPoints[i - 1].splice(-2, 2));
 
 		reversedPoints.push(newPoint);
 	}
 
-	return new Path(reversedPoints);
+	return Path(reversedPoints);
 }
