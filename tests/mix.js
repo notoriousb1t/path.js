@@ -1,7 +1,7 @@
 import test from 'ava';
 import Path from '../dist/path';
 
-test('works', (t) => {
+test('works', t => {
 	const a = 'M 100 100 L 200 200';
 	const b = 'M 200 100 L 100 200';
 
@@ -14,7 +14,7 @@ test('works', (t) => {
 	t.pass();
 });
 
-test('defaults x to a value of 0.5', (t) => {
+test('defaults x to a value of 0.5', t => {
 	const a = 'M 100 100 L 200 200';
 	const b = 'M 200 100 L 100 200';
 
@@ -23,7 +23,7 @@ test('defaults x to a value of 0.5', (t) => {
 	t.pass();
 });
 
-test('supports mixing S and C after S and C', (t) => {
+test('supports mixing S and C after S and C', t => {
 	const a = 'M 0 0 C 10 10, 20 -10, 30 0 S 50 -10, 60 0';
 	const b = 'M 0 0 C 10 10, 20 -10, 30 0 C 40 -10, 50 10, 60 0';
 
@@ -39,7 +39,7 @@ test('supports mixing S and C after S and C', (t) => {
 	t.pass();
 });
 
-test('supports mixing S and C after M', (t) => {
+test('supports mixing S and C after M', t => {
 	const a = 'M 0 0 S 50 -10, 60 0';
 	const b = 'M 0 0 C 40 -10, 50 10, 60 0';
 

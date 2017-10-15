@@ -1,7 +1,7 @@
 import test from 'ava';
 import Path from '../dist/path';
 
-test('works as a constructor', (t) => {
+test('works as a constructor', t => {
 	const path0 = new Path('M 100 200 L 300 400');
 	t.is(path0.d(), 'M100,200l200,200');
 
@@ -14,7 +14,7 @@ test('works as a constructor', (t) => {
 	t.pass();
 });
 
-test('works as function', (t) => {
+test('works as function', t => {
 	const path0 = Path('M 100 200 L 300 400');
 	t.is(path0.d(), 'M100,200l200,200');
 
