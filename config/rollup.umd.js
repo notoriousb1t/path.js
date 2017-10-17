@@ -1,13 +1,21 @@
-import babel from 'rollup-plugin-babel';
+import typescript from 'rollup-plugin-typescript';
+import nodeResolve from 'rollup-plugin-node-resolve';
 
 export default {
-	entry: 'src/path/index.js',
+	entry: 'src/main.ts',
 	dest: 'dist/path.js',
 	sourceMap: true,
 	plugins: [
-		babel({
-			presets: ['es2015-rollup'],
-			babelrc: false
+		typescript({
+			typescript: require('typescript')
+		}),
+		nodeResolve({
+			module: true,
+			jsnext: true,
+			main: true,
+			browser: true,
+			extensions: ['.js', '.json'],
+			preferBuiltins: false
 		})
 	],
 	format: 'umd',

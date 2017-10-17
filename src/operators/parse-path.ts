@@ -1,17 +1,13 @@
-export function Path(d) {
-	if (!(this instanceof Path)) {
-		return new Path(d);
+export function parsePath(d: any[][] | string) {
+	if (Array.isArray(d)) {
+		return d;
 	}
-
-	this.points = Array.isArray(d) ? d : pointArray(d);
-}
-
-export function pointArray(d) {
+	
 	const dstrings = d.trim().split(/\s*(?=[A-Z])/i);
 
 	const allPoints = [];
 	for (let i = 0, ilen = dstrings.length; i < ilen; i++) {
-		const pointArray = dstrings[i]
+		const pointArray: any[] = dstrings[i]
 			.trim()
 			// These two replaces are to simplify the split regex
 			.replace(/([^, ])-/g, '$1,-')
@@ -21,7 +17,7 @@ export function pointArray(d) {
 
 		// This is done in a separate map so that lastPoint is parsed point
 		const command = pointArray[0];
-		const commandToUpper = command.toUpperCase();
+		const commandToUpper = (command as string).toUpperCase();
 
 		if (i !== 0 && commandToUpper !== command) {
 			// adjust for relative commands

@@ -1,8 +1,8 @@
-import { Path } from './path';
 import { slopeToCurve } from './slope-to-curve';
-import { C, S, M, L } from './constants';
+import { C, S, M, L } from '../constants';
+import { raiseError } from '../utilities/exception';
 
-export function reversePath(points) {
+export function reversePath(points: any[][]) {
 	// convert all curves to C
 	const allPoints = points.map((num, i) => {
 		const command = num[0]
@@ -14,7 +14,7 @@ export function reversePath(points) {
 			return slopeToCurve(num, points[i - 1]);
 		}
 
-		throw new Error('Cannot reverse that');
+		raiseError('Can\'t reverse that');
 	});
 
 	// Reverse
@@ -36,5 +36,5 @@ export function reversePath(points) {
 		reversedPoints.push(newPoint);
 	}
 
-	return Path(reversedPoints);
+	return reversedPoints;
 }

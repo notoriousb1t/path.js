@@ -1,7 +1,7 @@
-export function getPathString(options) {
+export function formatPath(points: any[], options?: { type?: string }) {
 	const type = (options && options.type) || 'relative';
-
-	return this.points
+	
+	return points
 		.map((point, i, allPoints) => {
 			if (i === 0 || type === 'absolute') {
 				return (
@@ -20,7 +20,7 @@ export function getPathString(options) {
 				point
 					.slice(1)
 					.map((num, j) => {
-						return toImpreciseString(num - prev[prev.length - (j % 2 === 0 ? 2 : 1)]);
+						return toImpreciseString(+num - +prev[prev.length - (j % 2 === 0 ? 2 : 1)]);
 					})
 					.join(',')
 			);
@@ -28,6 +28,6 @@ export function getPathString(options) {
 		.join('');
 }
 
-function toImpreciseString(num) {
+function toImpreciseString(num: number) {
 	return num.toFixed(1).replace('.0', '');
 }
