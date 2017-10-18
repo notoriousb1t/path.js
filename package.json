@@ -10,8 +10,8 @@
     "clean": "node_modules/.bin/del-cli -f dist types",
     "compress": "npm run compress:umd",
     "compress:umd": "uglifyjs --config-file ./config/compress.json -o dist/path.min.js dist/path.js",
-    "format": "prettier --print-width 120 --use-tabs --single-quote --write \"src/**/*.js\"",
-    "format:tests": "prettier --print-width 120 --use-tabs --single-quote --write \"tests/**/*.js\"",
+    "format": "prettier --print-width 120 --single-quote --write \"src/**/*.ts\"",
+    "format:tests": "prettier --print-width 120 --single-quote --write \"tests/**/*.ts\"",
     "prepublish": "npm run test",
     "pretest": "npm run build",
     "start": "npm run build && ava --watch",
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/samknows/path.js#readme",
   "ava": {
     "files": [
-      "tests/*.js"
+      "tests/**/*.js"
     ]
   },
   "devDependencies": {
@@ -43,7 +43,6 @@
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-typescript": "^0.8.1",
-    "ts-node": "^3.3.0",
     "uglify-js": "^3.1.3"
   }
 }

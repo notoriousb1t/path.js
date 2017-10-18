@@ -3,38 +3,38 @@ import { C, S, M, L } from '../constants';
 import { raiseError } from '../utilities/exception';
 
 export function reversePath(points: any[][]) {
-	// convert all curves to C
-	const allPoints = points.map((num, i) => {
-		const command = num[0]
-		if (command === M || command === L || command === C) {
-			return num.slice();
-		}
+  // convert all curves to C
+  const allPoints = points.map((num, i) => {
+    const command = num[0];
+    if (command === M || command === L || command === C) {
+      return num.slice();
+    }
 
-		if (command === S) {
-			return slopeToCurve(num, points[i - 1]);
-		}
+    if (command === S) {
+      return slopeToCurve(num, points[i - 1]);
+    }
 
-		raiseError('Can\'t reverse that');
-	});
+    raiseError("Can't reverse that");
+  });
 
-	// Reverse
-	const reversedPoints = [[M].concat(allPoints[allPoints.length - 1].splice(-2, 2))];
+  // Reverse
+  const reversedPoints = [[M].concat(allPoints[allPoints.length - 1].splice(-2, 2))];
 
-	// Don't hit 0: that'll just equal 'M'
-	for (let i = allPoints.length - 1; i >= 1; i--) {
-		// reverse arguments
-		const oldPoint = allPoints[i];
-		const newPoint = [oldPoint[0]];
+  // Don't hit 0: that'll just equal 'M'
+  for (let i = allPoints.length - 1; i >= 1; i--) {
+    // reverse arguments
+    const oldPoint = allPoints[i];
+    const newPoint = [oldPoint[0]];
 
-		for (let j = oldPoint.length - 2; j > 0; j -= 2) {
-			newPoint.push.apply(newPoint, oldPoint.slice(j, j + 2));
-		}
+    for (let j = oldPoint.length - 2; j > 0; j -= 2) {
+      newPoint.push.apply(newPoint, oldPoint.slice(j, j + 2));
+    }
 
-		// grab coordinates from prev
-		newPoint.push.apply(newPoint, allPoints[i - 1].splice(-2, 2));
+    // grab coordinates from prev
+    newPoint.push.apply(newPoint, allPoints[i - 1].splice(-2, 2));
 
-		reversedPoints.push(newPoint);
-	}
+    reversedPoints.push(newPoint);
+  }
 
-	return reversedPoints;
+  return reversedPoints;
 }

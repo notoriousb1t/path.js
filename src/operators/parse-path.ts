@@ -1,36 +1,36 @@
 export function parsePath(d: any[][] | string) {
-	if (Array.isArray(d)) {
-		return d;
-	}
-	
-	const dstrings = d.trim().split(/\s*(?=[A-Z])/i);
+  if (Array.isArray(d)) {
+    return d;
+  }
 
-	const allPoints = [];
-	for (let i = 0, ilen = dstrings.length; i < ilen; i++) {
-		const pointArray: any[] = dstrings[i]
-			.trim()
-			// These two replaces are to simplify the split regex
-			.replace(/([^, ])-/g, '$1,-')
-			.replace(/([a-z])(?![,])/gi, '$1 ')
-			.split(/[\s,]+/)
-			.map((coord, i) => (i === 0 ? coord : +coord));
+  const dstrings = d.trim().split(/\s*(?=[A-Z])/i);
 
-		// This is done in a separate map so that lastPoint is parsed point
-		const command = pointArray[0];
-		const commandToUpper = (command as string).toUpperCase();
+  const allPoints = [];
+  for (let i = 0, ilen = dstrings.length; i < ilen; i++) {
+    const pointArray: any[] = dstrings[i]
+      .trim()
+      // These two replaces are to simplify the split regex
+      .replace(/([^, ])-/g, '$1,-')
+      .replace(/([a-z])(?![,])/gi, '$1 ')
+      .split(/[\s,]+/)
+      .map((coord, i) => (i === 0 ? coord : +coord));
 
-		if (i !== 0 && commandToUpper !== command) {
-			// adjust for relative commands
-			const prev = allPoints[i - 1];
-			pointArray[0] = commandToUpper;
+    // This is done in a separate map so that lastPoint is parsed point
+    const command = pointArray[0];
+    const commandToUpper = (command as string).toUpperCase();
 
-			for (let j = 1, jlen = pointArray.length; j < jlen; j++) {
-				pointArray[j] += prev[prev.length - ((j - 1) % 2 === 0 ? 2 : 1)];
-			}
-		}
+    if (i !== 0 && commandToUpper !== command) {
+      // adjust for relative commands
+      const prev = allPoints[i - 1];
+      pointArray[0] = commandToUpper;
 
-		allPoints.push(pointArray);
-	}
+      for (let j = 1, jlen = pointArray.length; j < jlen; j++) {
+        pointArray[j] += prev[prev.length - ((j - 1) % 2 === 0 ? 2 : 1)];
+      }
+    }
 
-	return allPoints;
+    allPoints.push(pointArray);
+  }
+
+  return allPoints;
 }

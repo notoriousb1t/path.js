@@ -1,4 +1,4 @@
 export const C = 'C',
-	S = 'S',
-	M = 'M',
-	L = 'L';
+  S = 'S',
+  M = 'M',
+  L = 'L';
