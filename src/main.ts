@@ -22,8 +22,7 @@ path.mix = function(a, b, x) {
 	return path(mixPaths(parsePath(a), parsePath(b), x));
 };
 path.scale = function(pathStrings: string[], options?: { loop?: boolean }) {
-	const paths = pathStrings.map(parsePath);
-	return scalePath(paths, options);
+	return scalePath(pathStrings.map(parsePath), options);
 };
 
 function reverse(pathSource: PathSource) {
